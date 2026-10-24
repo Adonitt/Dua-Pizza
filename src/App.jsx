@@ -1,5 +1,5 @@
 import React, { useEffect, useMemo, useRef, useState } from 'react';
-import { ArrowDown, ArrowRight, Check, Clock3, MapPin, Menu as MenuIcon, MessageCircle, Minus, Plus, ShoppingBag, X } from 'lucide-react';
+import { ArrowDown, ArrowRight, Check, Clock3, MapPin, Menu as MenuIcon, MessageCircle, Minus, Plus, ShoppingBag, Sparkles, X } from 'lucide-react';
 import { menuCategories, products } from './menuData.js';
 
 const WHATSAPP_NUMBER = '38348666613';
@@ -41,6 +41,8 @@ function App() {
   const [addedProduct, setAddedProduct] = useState('');
   const [customer, setCustomer] = useState({ name: '', phone: '', address: '', note: '' });
   const toastTimer = useRef(null);
+  const firstProductCardRef = useRef(null);
+  const scrollToProductsRef = useRef(false);
 
   const itemCount = cart.reduce((sum, item) => sum + item.quantity, 0);
   const total = useMemo(() => cart.reduce((sum, item) => sum + (item.price ?? 0) * item.quantity, 0), [cart]);
@@ -59,6 +61,12 @@ function App() {
   }, []);
 
   useEffect(() => () => window.clearTimeout(toastTimer.current), []);
+
+  useEffect(() => {
+    if (!scrollToProductsRef.current) return;
+    scrollToProductsRef.current = false;
+    firstProductCardRef.current?.scrollIntoView({ behavior: 'smooth', block: 'start' });
+  }, [category]);
 
   const addToCart = (product, variant) => {
     const itemId = `${product.id}-${variant.label}`;
@@ -85,7 +93,7 @@ function App() {
       setStoreOpen(false);
       return;
     }
-    const lines = cart.map((item) => `• ${item.quantity} × ${item.name}${item.variantLabel ? ` (${item.variantLabel})` : ''} — ${item.price == null ? 'çmimi konfirmohet në WhatsApp' : `${(item.price * item.quantity).toFixed(2)} €`}`);
+    const lines = cart.map((item) => `- ${item.quantity} × ${item.name}${item.variantLabel ? ` (${item.variantLabel})` : ''} — ${item.price == null ? 'çmimi konfirmohet në WhatsApp' : `${(item.price * item.quantity).toFixed(2)} €`}`);
     const message = [
       'Përshëndetje DUA Pizza! Dua të porosis:',
       '',
@@ -103,10 +111,18 @@ function App() {
   };
 
   const scrollToMenu = () => document.getElementById('menu')?.scrollIntoView({ behavior: 'smooth' });
+  const selectCategory = (nextCategory) => {
+    if (nextCategory === category) {
+      firstProductCardRef.current?.scrollIntoView({ behavior: 'smooth', block: 'start' });
+      return;
+    }
+    scrollToProductsRef.current = true;
+    setCategory(nextCategory);
+  };
 
   return (
     <div className="site-shell">
-      <div className="announcement"><span className="announcement-dot" /> DËRGESA FALAS NË GJITHË PODUJEVËN <span className="announcement-separator">✳</span> SHIJE QË TË MBETET N'MEND</div>
+      <div className="announcement"><Sparkles className="announcement-dot" size={11} aria-hidden="true" /> DËRGESA FALAS NË GJITHË PODUJEVËN <span className="announcement-separator" aria-hidden="true"><Sparkles size={12} /></span> SHIJE QË TË MBETET N'MEND</div>
 
       <header className="topbar">
         <a className="logo-link" href="#home" aria-label="DUA Pizza, faqja kryesore"><Logo /></a>
@@ -136,7 +152,7 @@ function App() {
           </div>
           <div className="hero-art" aria-label="Fotografi të produkteve DUA Pizza">
             <div className="hero-photo"><img key={heroSlides[heroSlide].image} src={heroSlides[heroSlide].image} alt={heroSlides[heroSlide].label} /></div>
-            <div className="hero-sticker"><span>ME<br />DASHNI</span><span className="sticker-star">✳</span></div>
+            <div className="hero-sticker"><span>ME<br />DASHNI</span><Sparkles className="sticker-star" size={15} aria-hidden="true" /></div>
             <div className="photo-caption"><span>{String(heroSlide + 1).padStart(2, '0')} /</span> {heroSlides[heroSlide].caption}</div>
             <div className="hero-slide-dots" aria-label="Fotot e prezantuara">{heroSlides.map((slide, index) => <button key={slide.image} type="button" className={index === heroSlide ? 'active' : ''} aria-label={`Shfaq: ${slide.label}`} aria-pressed={index === heroSlide} onClick={() => setHeroSlide(index)} />)}</div>
             <div className="photo-frame" />
@@ -160,7 +176,7 @@ function App() {
           {products.length > 0 ? (
             <>
               <div className="category-tabs" role="tablist" aria-label="Kategoritë e menusë">
-                {menuCategories.map((item) => <button key={item} className={category === item ? 'category-tab active' : 'category-tab'} onClick={() => setCategory(item)} role="tab" aria-selected={category === item}>{item}</button>)}
+                {menuCategories.map((item) => <button key={item} className={category === item ? 'category-tab active' : 'category-tab'} onClick={() => selectCategory(item)} role="tab" aria-selected={category === item}>{item}</button>)}
               </div>
               <div className="preview-banner"><span>FOTOT</span><p>Fotot janë vendosur te artikujt përkatës. Madhësitë dhe çmimet bazohen në menynë e dërguar.</p></div>
               <div className="product-grid">
@@ -168,7 +184,7 @@ function App() {
                   const selectedIndex = selectedVariants[product.id] ?? 0;
                   const selectedVariant = product.variants[selectedIndex];
                   const imageShapeClass = product.category === 'Sanduiçe' ? 'product-card-sandwich' : product.category === 'Pije' ? 'product-card-drink' : product.category === 'Sosat' ? 'product-card-sauce' : '';
-                  return <article className={`product-card ${imageShapeClass}`} key={product.id}>
+                  return <article ref={index === 0 ? firstProductCardRef : null} className={`product-card ${imageShapeClass}`} key={product.id}>
                     <div className="product-image-wrap"><img src={product.image} alt={`Foto e ${product.name}`} loading="lazy" width="960" height="640" /><span className="product-number">{String(index + 1).padStart(2, '0')}</span></div>
                     <div className="product-info"><div><p className="product-category">{product.category}</p><h3>{product.name}</h3></div>{product.variants.length === 1 && <strong className="product-price">{selectedVariant.price == null ? 'Na pyetni' : `${selectedVariant.price.toFixed(2)} €`}</strong>}</div>
                     {product.description && <p className="product-description">{product.description}</p>}
@@ -180,7 +196,6 @@ function App() {
             </>
           ) : (
             <div className="menu-empty">
-              <div className="empty-graphic"><span className="empty-slice">✳</span><span className="empty-spark spark-one">✦</span><span className="empty-spark spark-two">✳</span></div>
               <span className="empty-kicker">SË SHPEJTI NË MENY</span>
               <h3>Po e përgatisim<br />diçka <em>të shijshme.</em></h3>
               <p>Menuja jonë po vjen. Na ndiq prapë pak më vonë — kemi plot shije për të ndarë.</p>
@@ -190,10 +205,10 @@ function App() {
         </section>
 
         <section className="delivery-band" id="about">
-          <div className="delivery-mark">DUA<span>✳</span></div>
+          <div className="delivery-mark">DUA<span><Sparkles size={70} aria-hidden="true" /></span></div>
           <div className="delivery-copy"><span className="eyebrow eyebrow-light"><span className="eyebrow-line" /> KËNAQËSIA VJEN TE DERA</span><h2>DELIVERY?<br /><span>ËSHTË NGA NE.</span></h2><p>Dërgesë falas, pa kushte e pa hile — në të gjitha zonat e Podujevës.</p></div>
           <div className="delivery-badge"><MapPin size={19} /><span>0 €</span><small>DELIVERY</small></div>
-          <div className="delivery-squiggle" aria-hidden="true">〰</div>
+          <div className="delivery-squiggle" aria-hidden="true"><ArrowRight size={72} strokeWidth={1} /></div>
         </section>
 
         <section className="order-steps section-wrap">

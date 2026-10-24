@@ -11,8 +11,27 @@
     <link rel="preconnect" href="https://fonts.googleapis.com" />
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
     <link href="https://fonts.googleapis.com/css2?family=Barlow+Condensed:wght@500;600;700;800;900&family=DM+Sans:wght@400;500;600;700;800&display=swap" rel="stylesheet" />
-    <script type="module" crossorigin src="/assets/index-Cb4KAXdh.js"></script>
-    <link rel="stylesheet" crossorigin href="/assets/index-DewHWzjM.css">
+    <script>
+      if ('serviceWorker' in navigator) {
+        const reloadKey = 'dua-pizza:service-worker-cleanup-reload';
+
+        navigator.serviceWorker.getRegistrations().then(async (registrations) => {
+          if (registrations.length === 0) {
+            sessionStorage.removeItem(reloadKey);
+            return;
+          }
+
+          await Promise.all(registrations.map((registration) => registration.unregister()));
+
+          if (navigator.serviceWorker.controller && !sessionStorage.getItem(reloadKey)) {
+            sessionStorage.setItem(reloadKey, '1');
+            window.location.reload();
+          }
+        }).catch(() => {});
+      }
+    </script>
+    <script type="module" crossorigin src="/assets/index-BztYi3E4.js"></script>
+    <link rel="stylesheet" crossorigin href="/assets/index-BHFtJA_O.css">
   </head>
   <body>
     <div id="root"></div>
