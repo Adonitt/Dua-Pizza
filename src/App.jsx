@@ -1,5 +1,5 @@
 import React, { useEffect, useMemo, useRef, useState } from 'react';
-import { ArrowDown, ArrowRight, Check, Clock3, MapPin, Menu as MenuIcon, MessageCircle, Minus, Plus, ShoppingBag, Sparkles, X } from 'lucide-react';
+import { ArrowDown, ArrowRight, Banknote, Check, Clock3, Info, MapPin, Menu as MenuIcon, MessageCircle, Minus, Plus, ShoppingBag, Sparkles, X } from 'lucide-react';
 import { menuCategories, products } from './menuData.js';
 
 const WHATSAPP_NUMBER = '38348666613';
@@ -97,18 +97,27 @@ function App() {
       setStoreOpen(false);
       return;
     }
-    const lines = cart.map((item) => `- ${item.quantity} × ${item.name}${item.variantLabel ? ` (${item.variantLabel})` : ''} — ${item.price == null ? 'çmimi konfirmohet në WhatsApp' : `${(item.price * item.quantity).toFixed(2)} €`}`);
+    const lines = cart.map((item) => `• ${item.quantity} × ${item.name}${item.variantLabel ? ` (${item.variantLabel})` : ''} — ${item.price == null ? 'çmimi konfirmohet' : `${(item.price * item.quantity).toFixed(2)} €`}`);
     const message = [
-      'Përshëndetje DUA Pizza! Dua të porosis:',
+      '🍕 *POROSI E RE — DUA PIZZA*',
       '',
+      'Përshëndetje! Dua të porosis:',
+      '',
+      '🧾 *Artikujt:*',
       ...lines,
       '',
-      hasPriceToConfirm ? `Nëntotali i çmimeve të publikuara: ${total.toFixed(2)} € (çmimi i produktit pa çmim konfirmohet në WhatsApp)` : `Totali: ${total.toFixed(2)} €`,
-      `Mënyra: ${orderType}`,
+      hasPriceToConfirm ? `💶 Nëntotali i artikujve me çmim: ${total.toFixed(2)} €` : `💶 *Totali: ${total.toFixed(2)} €*`,
+      '',
+      orderType === 'Dërgesë' ? '🚚 *Dërgesë* — falas në Podujevë' : '🏪 *Marrje në lokal*',
+      '💵 *Pagesa:* Me para në dorë (cash)',
+      '',
+      '👤 *Të dhënat e klientit:*',
       `Emri: ${customer.name}`,
       `Telefoni: ${customer.phone}`,
-      ...(orderType === 'Dërgesë' ? [`Adresa: ${customer.address}`, 'Dërgesa: Falas në Podujevë'] : []),
-      ...(customer.note ? [`Shënim: ${customer.note}`] : []),
+      ...(orderType === 'Dërgesë' ? [`📍 Adresa: ${customer.address}`] : []),
+      ...(customer.note ? [`📝 Shënim: ${customer.note}`] : []),
+      '',
+      'Ju lutem ma konfirmoni porosinë. Faleminderit! 🙏',
     ].join('\n');
     window.open(`https://wa.me/${WHATSAPP_NUMBER}?text=${encodeURIComponent(message)}`, '_blank', 'noopener,noreferrer');
     setSent(true);
@@ -279,6 +288,8 @@ function App() {
         <div className="panel-header"><div><span className="panel-kicker">EDHE NJË HAP</span><h2>{sent ? 'Porosia u hap në WhatsApp' : 'Të dhënat e porosisë'}</h2></div><button className="close-button" onClick={() => { setCheckoutOpen(false); setSent(false); }} aria-label="Mbyll"><X /></button></div>
         {sent ? <div className="sent-state"><div className="sent-check"><Check size={25} /></div><p>WhatsApp u hap me porosinë tënde. Dërgoje mesazhin për ta konfirmuar me ekipin.</p><button className="button button-dark" onClick={() => { setCheckoutOpen(false); setSent(false); setCart([]); }}>U KRYE <Check size={16} /></button></div> : <form onSubmit={sendOrder} className="checkout-form">
           <div className="order-type-switch"><button type="button" className={orderType === 'Dërgesë' ? 'selected' : ''} onClick={() => setOrderType('Dërgesë')}><MapPin size={15} /> Dërgesë</button><button type="button" className={orderType === 'Marrje në lokal' ? 'selected' : ''} onClick={() => setOrderType('Marrje në lokal')}><ShoppingBag size={15} /> Marrje në lokal</button></div>
+          <div className="order-data-notice" role="note"><Info size={17} aria-hidden="true" /><p>Ju lutem sigurohuni që emri, numri i telefonit{orderType === 'Dërgesë' ? ' dhe adresa' : ''} të jenë të sakta, që porosia të përpunohet pa vonesa.</p></div>
+          <div className="form-cash"><Banknote size={16} aria-hidden="true" /> Pagesa bëhet me para në dorë (cash).</div>
           <label>Emri yt<input required value={customer.name} onChange={(e) => setCustomer({ ...customer, name: e.target.value })} placeholder="Si të thërrasim?" /></label>
           <label>Numri i telefonit<input required type="tel" value={customer.phone} onChange={(e) => setCustomer({ ...customer, phone: e.target.value })} placeholder="04X XXX XXX" /></label>
           {orderType === 'Dërgesë' && <><label>Adresa e dërgesës<input required value={customer.address} onChange={(e) => setCustomer({ ...customer, address: e.target.value })} placeholder="Rruga, lagjja, ndonjë pikë orientimi" /></label><div className="form-delivery"><MapPin size={15} /> Dërgesa falas në Podujevë</div></>}

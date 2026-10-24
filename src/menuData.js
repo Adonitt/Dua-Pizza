@@ -98,6 +98,6 @@ export const products = [
     name,
     description: '',
     image,
-    variants: [{ label: 'Standard', price: null }],
+    variants: [{ label: 'Standard', price: 0.5 }],
   })),
 ];
