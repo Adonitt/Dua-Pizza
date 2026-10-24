@@ -20,8 +20,17 @@ function isOrderingOpen() {
 }
 const heroSlides = [
   { image: '/images/pizza-hero.webp', label: 'Pica e sapopjekur', caption: 'E SAPOPJEKUR, GATI PËR TY' },
-  { image: '/images/sandwich.webp', label: 'Sanduiç i freskët', caption: 'SANDUIÇ I NGROHTË, GATI PËR TY' },
-  { image: '/images/drinks.webp', label: 'Pije të ftohta', caption: 'PIJET E FRESKËTA, GATI PËR TY' },
+  { image: '/images/sandwich-hero.png', label: 'Sanduiç i freskët', caption: 'SANDUIÇ I NGROHTË, GATI PËR TY' },
+  {
+    image: '/images/pije/coca-cola.webp',
+    label: 'Pijet e preferuara',
+    caption: 'PIJET E PREFERUARA, TË FTOHTA',
+    drinks: [
+      { image: '/images/pije/fanta-orange.webp', label: 'Fanta' },
+      { image: '/images/pije/coca-cola.webp', label: 'Coca-Cola' },
+      { image: '/images/pije/golden%20eagle.webp', label: 'Golden Eagle' },
+    ],
+  },
 ];
 
 function Logo({ className = '' }) {
@@ -41,6 +50,7 @@ function App() {
   const [addedProduct, setAddedProduct] = useState('');
   const [customer, setCustomer] = useState({ name: '', phone: '', address: '', note: '' });
   const toastTimer = useRef(null);
+  const heroTouchStartX = useRef(null);
   const firstProductCardRef = useRef(null);
   const scrollToProductsRef = useRef(false);
 
@@ -48,12 +58,6 @@ function App() {
   const total = useMemo(() => cart.reduce((sum, item) => sum + (item.price ?? 0) * item.quantity, 0), [cart]);
   const hasPriceToConfirm = cart.some((item) => item.price == null);
   const visibleProducts = products.filter((item) => item.category === category);
-
-  useEffect(() => {
-    if (window.matchMedia('(prefers-reduced-motion: reduce)').matches) return undefined;
-    const slideTimer = window.setInterval(() => setHeroSlide((current) => (current + 1) % heroSlides.length), 5000);
-    return () => window.clearInterval(slideTimer);
-  }, []);
 
   useEffect(() => {
     const hoursTimer = window.setInterval(() => setStoreOpen(isOrderingOpen()), 15000);
@@ -120,6 +124,14 @@ function App() {
     setCategory(nextCategory);
   };
 
+  const handleHeroSwipeEnd = (event) => {
+    const startX = heroTouchStartX.current;
+    const endX = event.changedTouches[0]?.clientX;
+    heroTouchStartX.current = null;
+    if (startX == null || endX == null || Math.abs(endX - startX) < 45) return;
+    setHeroSlide((current) => (current + (endX < startX ? 1 : -1) + heroSlides.length) % heroSlides.length);
+  };
+
   return (
     <div className="site-shell">
       <div className="announcement"><Sparkles className="announcement-dot" size={11} aria-hidden="true" /> DËRGESA FALAS NË GJITHË PODUJEVËN <span className="announcement-separator" aria-hidden="true"><Sparkles size={12} /></span> SHIJE QË TË MBETET N'MEND</div>
@@ -150,8 +162,12 @@ function App() {
             </div>
             <div className="hero-note"><span className="note-check"><Check size={13} /></span> Dërgesë falas në Podujevë <span className="note-divider">·</span> Dërgesë ose marrje</div>
           </div>
-          <div className="hero-art" aria-label="Fotografi të produkteve DUA Pizza">
-            <div className="hero-photo"><img key={heroSlides[heroSlide].image} src={heroSlides[heroSlide].image} alt={heroSlides[heroSlide].label} /></div>
+          <div className="hero-art" aria-label="Fotografi të produkteve DUA Pizza. Rrëshqit majtas ose djathtas për të ndërruar foton." onTouchStart={(event) => { heroTouchStartX.current = event.touches[0]?.clientX ?? null; }} onTouchEnd={handleHeroSwipeEnd} onTouchCancel={() => { heroTouchStartX.current = null; }} onKeyDown={(event) => { if (event.key === 'ArrowRight') setHeroSlide((current) => (current + 1) % heroSlides.length); if (event.key === 'ArrowLeft') setHeroSlide((current) => (current - 1 + heroSlides.length) % heroSlides.length); }}>
+            <div className={`hero-photo${heroSlides[heroSlide].drinks ? ' hero-photo-drinks' : ''}`}>
+              {heroSlides[heroSlide].drinks
+                ? <div className="hero-drink-lineup" aria-label="Coca-Cola, Fanta dhe Golden Eagle">{heroSlides[heroSlide].drinks.map((drink) => <img key={drink.label} src={drink.image} alt={drink.label} />)}</div>
+                : <img key={heroSlides[heroSlide].image} src={heroSlides[heroSlide].image} alt={heroSlides[heroSlide].label} />}
+            </div>
             <div className="hero-sticker"><span>ME<br />DASHNI</span><Sparkles className="sticker-star" size={15} aria-hidden="true" /></div>
             <div className="photo-caption"><span>{String(heroSlide + 1).padStart(2, '0')} /</span> {heroSlides[heroSlide].caption}</div>
             <div className="hero-slide-dots" aria-label="Fotot e prezantuara">{heroSlides.map((slide, index) => <button key={slide.image} type="button" className={index === heroSlide ? 'active' : ''} aria-label={`Shfaq: ${slide.label}`} aria-pressed={index === heroSlide} onClick={() => setHeroSlide(index)} />)}</div>
