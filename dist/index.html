@@ -5,33 +5,19 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <meta name="theme-color" content="#e5252a" />
     <meta name="description" content="DUA Pizza — pica të freskëta dhe dërgesë falas në Podujevë. Porosit përmes WhatsApp." />
+    <meta name="application-name" content="DUA Pizza" />
+    <meta name="apple-mobile-web-app-capable" content="yes" />
+    <meta name="apple-mobile-web-app-title" content="DUA Pizza" />
+    <meta name="apple-mobile-web-app-status-bar-style" content="default" />
     <title>DUA Pizza — Pica me dashni</title>
     <link rel="icon" type="image/svg+xml" href="/dua-pizza-favicon.svg" />
-    <link rel="apple-touch-icon" href="/dua-pizza-logo-red-yellow.png" />
+    <link rel="apple-touch-icon" href="/apple-touch-icon.png" />
+    <link rel="manifest" href="/manifest.webmanifest" />
     <link rel="preconnect" href="https://fonts.googleapis.com" />
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
     <link href="https://fonts.googleapis.com/css2?family=Barlow+Condensed:wght@500;600;700;800;900&family=DM+Sans:wght@400;500;600;700;800&display=swap" rel="stylesheet" />
-    <script>
-      if ('serviceWorker' in navigator) {
-        const reloadKey = 'dua-pizza:service-worker-cleanup-reload';
-
-        navigator.serviceWorker.getRegistrations().then(async (registrations) => {
-          if (registrations.length === 0) {
-            sessionStorage.removeItem(reloadKey);
-            return;
-          }
-
-          await Promise.all(registrations.map((registration) => registration.unregister()));
-
-          if (navigator.serviceWorker.controller && !sessionStorage.getItem(reloadKey)) {
-            sessionStorage.setItem(reloadKey, '1');
-            window.location.reload();
-          }
-        }).catch(() => {});
-      }
-    </script>
-    <script type="module" crossorigin src="/assets/index-CjSUUFC4.js"></script>
-    <link rel="stylesheet" crossorigin href="/assets/index-jEOJO-Dy.css">
+    <script type="module" crossorigin src="/assets/index-DzODM-OJ.js"></script>
+    <link rel="stylesheet" crossorigin href="/assets/index-CamBdR1H.css">
   </head>
   <body>
     <div id="root"></div>

@@ -30,7 +30,7 @@ export const products = [
   pizza('hawaiian-vegetable', 'Hawaiian Vegetable', 'Salcë domatesh, djathë, spec, domate, ananas.', [3, 6, 9.5, 20], '/images/pizzas/4-djathrat.webp'),
   pizza('bbq', 'Pizza BBQ', 'Salcë domatesh, djathë, mish i bardhë me BBQ.', [3, 6, 9.5, 20], '/images/pizzas/bbq-pizza.webp'),
   pizza('four-seasons', 'Pizza 4 Stinët', 'Salcë domatesh, djathë, boloneze.', [3, 6, 9.5, 20], '/images/pizzas/pizza-juaj.webp'),
-  pizza('mexicana', 'Mexicana', 'Salcë domatesh, suxhuk, misër, kaçkavall, Tabasco.', [null, null, null, null], '/images/pizzas/mexican.webp'),
+  pizza('mexicana', 'Mexicana', 'Salcë domatesh, suxhuk, misër, kaçkavall, Tabasco.', [3, 6, 9.5, 20], '/images/pizzas/mexican.webp'),
   ...[
     ['sandwich-dua', 'Sandwich DUA', 2.5],
     ['sandwich-proshute', 'Sandwich Proshutë', 2.5],
