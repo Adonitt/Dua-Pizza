@@ -27,9 +27,9 @@ export const products = [
   pizza('tuna', 'Tuna', 'Salcë domatesh, djathë, ton, domate.', [2.5, 5.5, 9.5, 20], '/images/pizzas/tuna.webp'),
   pizza('oriental', 'Oriental', 'Salcë domatesh, djathë, suxhuk, leze, domate, vezë.', [3, 6, 9.5, 20], '/images/pizzas/oriental.jpg'),
   pizza('hawaiian', 'Hawaiian Pizza', 'Salcë domatesh, djathë, proshutë, ananas, domate, mish i tymosur.', [3, 6, 9.5, 20], '/images/pizzas/hawaian.webp'),
-  pizza('hawaiian-vegetable', 'Hawaiian Vegetable', 'Salcë domatesh, djathë, spec, domate, ananas.', [3, 6, 9.5, 20], '/images/pizzas/4-djathrat.webp'),
+  pizza('hawaiian-vegetable', 'Hawaiian Vegetable', 'Salcë domatesh, djathë, spec, domate, ananas.', [3, 6, 9.5, 20], '/images/pizzas/hawaian.webp'),
   pizza('bbq', 'Pizza BBQ', 'Salcë domatesh, djathë, mish i bardhë me BBQ.', [3, 6, 9.5, 20], '/images/pizzas/bbq-pizza.webp'),
-  pizza('four-seasons', 'Pizza 4 Stinët', 'Salcë domatesh, djathë, boloneze.', [3, 6, 9.5, 20], '/images/pizzas/pizza-juaj.webp'),
+  pizza('four-seasons', 'Pizza 4 Stinët', 'Salcë domatesh, djathë, boloneze.', [3, 6, 9.5, 20], '/images/pizzas/4-djathrat.webp'),
   pizza('mexicana', 'Mexicana', 'Salcë domatesh, suxhuk, misër, kaçkavall, Tabasco.', [3, 6, 9.5, 20], '/images/pizzas/mexican.webp'),
   ...[
     ['sandwich-dua', 'Sandwich DUA', 2.5],
