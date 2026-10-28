@@ -25,7 +25,7 @@ export const products = [
   pizza('peperoni', 'Peperoni', 'Salcë domatesh, djathë, suxhuk, kërpudha, domate.', [2.5, 5.5, 9, 19.5], '/images/pizzas/peperoni.webp'),
   pizza('pershute', 'Proshutë', 'Salcë domatesh, djathë, proshutë, kërpudha, domate.', [2.5, 5.5, 9, 19.5], '/images/pizzas/pershuto.webp'),
   pizza('tuna', 'Tuna', 'Salcë domatesh, djathë, ton, domate.', [2.5, 5.5, 9.5, 20], '/images/pizzas/tuna.webp'),
-  pizza('loca', 'Pizza Loca', '', [3, 6, 9.5, 20], '/images/pizzas/loca.webp'),
+  pizza('loca', 'Pizza Loca', 'Salcë domatesh Rolls, djathë Rolls, suxhuk, salcë Loca.', [3, 6, 9.5, 20], '/images/pizzas/loca.webp'),
   pizza('oriental', 'Oriental', 'Salcë domatesh, djathë, suxhuk, leze, domate, vezë.', [3, 6, 9.5, 20], '/images/pizzas/oriental.webp'),
   pizza('hawaiian', 'Hawaiian Pizza', 'Salcë domatesh, djathë, proshutë, ananas, domate, mish i tymosur.', [3, 6, 9.5, 20], '/images/pizzas/hawaian.webp'),
   pizza('hawaiian-vegetable', 'Hawaiian Vegetable', 'Salcë domatesh, djathë, spec, domate, ananas.', [3, 6, 9.5, 20], '/images/pizzas/hawaian.webp'),
